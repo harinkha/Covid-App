@@ -1,5 +1,10 @@
 import 'package:covidapp/widgets/DaysLeft.dart';
+import 'package:covidapp/widgets/ScrollableRowIcons.dart';
+import 'package:covidapp/widgets/dailycases.dart';
+import 'package:covidapp/widgets/duration.dart';
+import 'package:covidapp/widgets/durationText.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,59 +37,43 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 249, 255, 242),
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 249, 255, 242),
-        title: Text(
-          "                14 days\n Self-isolation countdown",
-          style: TextStyle(color: Color.fromARGB(255, 154, 155, 159)),
+        backgroundColor: Color.fromARGB(255, 242, 249, 255),
+        appBar: AppBar(
+          centerTitle: true,
+          backgroundColor: Color.fromARGB(255, 242, 249, 255),
+          elevation: 0,
         ),
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () => print("Debug"),
-          icon: const Icon(Icons.keyboard_arrow_left),
-          color: Color.fromARGB(255, 12, 134, 246),
-          iconSize: 40,
-        ),
-        actions: [
-          IconButton(
-            onPressed: () => print("Debug"),
-            icon: const Icon(Icons.menu),
-            color: Color.fromARGB(255, 12, 134, 246),
-            iconSize: 30,
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
+        body: Column(
+          children: [
+            Center(
+                child: Column(
+              children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 60),
-                  child: Daysleft(12),
+                  padding: const EdgeInsets.only(top: 60, bottom: 10),
+                  child: DailyCases(),
                 ),
+                Padding(
+                  padding: const EdgeInsets.all(14.0),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(children: [
+                      CustomButtonIcon('assets/images/news-report.png', 'News'),
+                      CustomButtonIcon('assets/images/flask.png', 'Labs'),
+                      CustomButtonIcon(
+                          'assets/images/information.png', 'Information'),
+                      CustomButtonIcon(
+                          'assets/images/medicine.png', 'Reminder'),
+                    ]),
+                  ),
+                )
               ],
-            ),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+            ))
+          ],
+        )
+        // This trailing comma makes auto-formatting nicer for build methods.
+        );
   }
 }

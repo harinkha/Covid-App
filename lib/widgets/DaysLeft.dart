@@ -15,35 +15,39 @@ class Daysleft extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(26.0),
           child: Stack(children: [
-            Image.network(
-              'https://img.freepik.com/free-photo/covid-19-corona-virus-with-spike-glycoprotein-are-floating-air-blue-color-background-3d-rendering_18981-654.jpg?w=2000',
+            Image.asset(
+              'assets/images/covid-bg.jpg',
             ),
             Center(
                 child: Column(children: [
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(20.0),
                 child: Text(
                   "You Have",
                   style: GoogleFonts.openSans(
-                    fontSize: 30,
-                    color: Colors.white,
-                  ),
+                      fontSize: 30,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   days.toString(),
-                  style:
-                      GoogleFonts.openSans(fontSize: 40, color: Colors.white),
+                  style: GoogleFonts.openSans(
+                      fontSize: 50,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(20.0),
                 child: Text(
                   "Days Left",
-                  style:
-                      GoogleFonts.openSans(fontSize: 30, color: Colors.white),
+                  style: GoogleFonts.openSans(
+                      fontSize: 30,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700),
                 ),
               ),
             ])),
