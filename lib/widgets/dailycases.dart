@@ -4,7 +4,9 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DailyCases extends StatelessWidget {
-  const DailyCases({Key? key}) : super(key: key);
+  int cases;
+
+  DailyCases(this.cases);
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,7 @@ class DailyCases extends StatelessWidget {
             Align(
               alignment: AlignmentDirectional(0.9, 0),
               child: Text(
-                '12000',
+                cases.toString(),
                 style: GoogleFonts.openSans(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,

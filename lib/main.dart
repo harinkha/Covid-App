@@ -3,6 +3,7 @@ import 'package:covidapp/widgets/ScrollableRowIcons.dart';
 import 'package:covidapp/widgets/dailycases.dart';
 import 'package:covidapp/widgets/duration.dart';
 import 'package:covidapp/widgets/durationText.dart';
+import 'package:covidapp/widgets/BannerWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -42,6 +43,14 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 242, 249, 255),
         appBar: AppBar(
+          title: Text(
+            "Home",
+            style: GoogleFonts.archivoBlack(
+              color: Colors.black,
+              fontWeight: FontWeight.w300,
+              fontSize: 25,
+            ),
+          ),
           centerTitle: true,
           backgroundColor: Color.fromARGB(255, 242, 249, 255),
           elevation: 0,
@@ -52,11 +61,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 60, bottom: 10),
-                  child: DailyCases(),
+                  padding: const EdgeInsets.only(top: 30, bottom: 10),
+                  child: DailyCases(125),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(14.0),
+                  padding: const EdgeInsets.all(20.0),
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(children: [
@@ -68,7 +77,17 @@ class _MyHomePageState extends State<MyHomePage> {
                           'assets/images/medicine.png', 'Reminder'),
                     ]),
                   ),
-                )
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: bannerWidget(
+                      'assets/images/covid-bg.png', 'Enter Quarantine'),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: bannerWidget(
+                      'assets/images/covid-bg.png', 'Detailed Daily Cases'),
+                ),
               ],
             ))
           ],
