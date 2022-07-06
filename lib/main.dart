@@ -1,9 +1,12 @@
+import 'package:covidapp/screens/homepage.dart';
+import 'package:covidapp/screens/isolation.dart';
 import 'package:covidapp/widgets/DaysLeft.dart';
 import 'package:covidapp/widgets/ScrollableRowIcons.dart';
 import 'package:covidapp/widgets/dailycases.dart';
 import 'package:covidapp/widgets/duration.dart';
 import 'package:covidapp/widgets/durationText.dart';
 import 'package:covidapp/widgets/BannerWidget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -39,60 +42,28 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Color.fromARGB(255, 242, 249, 255),
-        appBar: AppBar(
-          title: Text(
-            "Home",
-            style: GoogleFonts.archivoBlack(
-              color: Colors.black,
-              fontWeight: FontWeight.w300,
-              fontSize: 25,
-            ),
-          ),
-          centerTitle: true,
-          backgroundColor: Color.fromARGB(255, 242, 249, 255),
-          elevation: 0,
-        ),
-        body: Column(
-          children: [
-            Center(
-                child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 30, bottom: 10),
-                  child: DailyCases(125),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(children: [
-                      CustomButtonIcon('assets/images/news-report.png', 'News'),
-                      CustomButtonIcon('assets/images/flask.png', 'Labs'),
-                      CustomButtonIcon(
-                          'assets/images/information.png', 'Information'),
-                      CustomButtonIcon(
-                          'assets/images/medicine.png', 'Reminder'),
-                    ]),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: bannerWidget(
-                      'assets/images/covid-bg.png', 'Enter Quarantine'),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: bannerWidget(
-                      'assets/images/covid-bg.png', 'Detailed Daily Cases'),
-                ),
-              ],
-            ))
-          ],
-        )
-        // This trailing comma makes auto-formatting nicer for build methods.
-        );
-  }
+  Widget build(BuildContext context) => CupertinoTabScaffold(
+      tabBar: CupertinoTabBar(
+        activeColor: CupertinoColors.black,
+        inactiveColor: CupertinoColors.black.withOpacity(0.5),
+        items: [
+          BottomNavigationBarItem(
+              label: 'Home', icon: Icon(CupertinoIcons.home)),
+          BottomNavigationBarItem(
+              label: 'Medicines', icon: Icon(CupertinoIcons.lab_flask_solid)),
+          BottomNavigationBarItem(
+              label: 'Profile', icon: Icon(CupertinoIcons.person)),
+        ],
+      ),
+      tabBuilder: (context, index) {
+        switch (index) {
+          case 0:
+            return HomePage();
+          case 1:
+            return IsolationPage();
+          case 2:
+          default:
+            return HomePage();
+        }
+      });
 }
