@@ -50,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
               label: 'Home', icon: Icon(CupertinoIcons.home)),
           BottomNavigationBarItem(
-              label: 'Medicines', icon: Icon(CupertinoIcons.lab_flask_solid)),
+              label: 'Quarantine', icon: Icon(CupertinoIcons.lab_flask_solid)),
           BottomNavigationBarItem(
               label: 'Profile', icon: Icon(CupertinoIcons.person)),
         ],

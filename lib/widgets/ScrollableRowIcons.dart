@@ -6,7 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 class CustomButtonIcon extends StatelessWidget {
   String path;
   String label;
-  CustomButtonIcon(this.path, this.label);
+  VoidCallback actions;
+  CustomButtonIcon(this.path, this.label, this.actions);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class CustomButtonIcon extends StatelessWidget {
               path,
             ),
             iconSize: 70,
-            onPressed: () {},
+            onPressed: actions,
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),

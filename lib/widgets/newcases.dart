@@ -3,12 +3,13 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class bannerWidget extends StatelessWidget {
-  String label;
+class NewCases extends StatelessWidget {
+  String left;
+  int number;
   String path;
   VoidCallback actions;
 
-  bannerWidget(this.path, this.label, this.actions);
+  NewCases(this.path, this.left, this.number, this.actions);
 
   @override
   Widget build(BuildContext context) {
@@ -37,16 +38,32 @@ class bannerWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              Align(
-                alignment: Alignment.center,
-                child: Text(
-                  label,
-                  style: GoogleFonts.openSans(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 30),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    left,
+                    style: GoogleFonts.openSans(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 25),
+                  ),
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    number.toString(),
+                    style: GoogleFonts.openSans(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 70),
+                  ),
+                ),
+              )
             ],
           ),
         ),
