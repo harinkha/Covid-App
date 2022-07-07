@@ -1,4 +1,5 @@
 import 'package:covidapp/screens/dailycasesPage.dart';
+import 'package:covidapp/screens/isolation.dart';
 import 'package:covidapp/widgets/DaysLeft.dart';
 import 'package:covidapp/widgets/ScrollableRowIcons.dart';
 import 'package:covidapp/widgets/dailycases.dart';
@@ -109,8 +110,7 @@ class _HomePageState extends State<HomePage> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            DailyCasesPage()));
+                                        builder: (context) => IsolationPage()));
                               })),
                           Padding(
                             padding: const EdgeInsets.only(top: 10),
