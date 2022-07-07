@@ -38,47 +38,53 @@ class _SummarizedTabState extends State<SummarizedTab> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _caseModel == null || _caseModel!.isEmpty
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : ListView(
-              children: [
-                NewCases('assets/images/covid-bg.png', 'New Cases',
-                    formatter.format(_caseModel![0].newCase), (() {})),
-                Row(
-                  children: [
-                    RectangularWidget(
-                        Colors.white,
-                        formatter.format(_caseModel![0].totalCase),
-                        'Total Infections'),
-                    RectangularWidget(
-                        Colors.white,
-                        formatter.format(_caseModel![0].totalDeath),
-                        'Total Deaths'),
-                  ],
-                ),
-                Row(
-                  children: [
-                    RectangularWidget(Colors.white,
-                        _caseModel![0].newDeath.toString(), 'New Deaths'),
-                    RectangularWidget(
-                        Colors.white,
-                        formatter.format(_caseModel![0].newRecovered),
-                        'New Recovered'),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: NewCases(
-                      'assets/images/recovery.jpg',
-                      'Total Recovered',
-                      formatter.format(_caseModel![0].totalRecovered),
-                      (() {})),
-                ),
-              ],
-            ),
+    return RefreshIndicator(
+      onRefresh: () async {
+        await Future.delayed(Duration(seconds: 1));
+        _getData();
+      },
+      child: Scaffold(
+        body: _caseModel == null || _caseModel!.isEmpty
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : ListView(
+                children: [
+                  NewCases('assets/images/covid-bg.png', 'New Cases',
+                      formatter.format(_caseModel![0].newCase), (() {})),
+                  Row(
+                    children: [
+                      RectangularWidget(
+                          Colors.white,
+                          formatter.format(_caseModel![0].totalCase),
+                          'Total Infections'),
+                      RectangularWidget(
+                          Colors.white,
+                          formatter.format(_caseModel![0].totalDeath),
+                          'Total Deaths'),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      RectangularWidget(Colors.white,
+                          _caseModel![0].newDeath.toString(), 'New Deaths'),
+                      RectangularWidget(
+                          Colors.white,
+                          formatter.format(_caseModel![0].newRecovered),
+                          'New Recovered'),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: NewCases(
+                        'assets/images/recovery.jpg',
+                        'Total Recovered',
+                        formatter.format(_caseModel![0].totalRecovered),
+                        (() {})),
+                  ),
+                ],
+              ),
+      ),
     );
   }
 }

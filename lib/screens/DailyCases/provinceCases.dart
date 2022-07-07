@@ -41,32 +41,38 @@ class _ProvinceTabState extends State<ProvinceTab> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: _caseModel == null || _caseModel!.isEmpty
-            ? const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.blue,
-                ),
-              )
-            : ListView.builder(
-                itemCount: _caseModel!.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Card(
-                      child: Column(
-                        children: [
-                          ProvinceWidget(
-                              Colors.white,
-                              _caseModel![index].province,
-                              formatter.format(_caseModel![index].newCase),
-                              formatter.format(_caseModel![index].newDeath),
-                              formatter.format(_caseModel![index].totalCase),
-                              formatter.format(_caseModel![index].totalDeath))
-                        ],
+    return RefreshIndicator(
+      onRefresh: (() async {
+        await Future.delayed(Duration(seconds: 1));
+        _getData();
+      }),
+      child: Scaffold(
+          body: _caseModel == null || _caseModel!.isEmpty
+              ? const Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.blue,
+                  ),
+                )
+              : ListView.builder(
+                  itemCount: _caseModel!.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        child: Column(
+                          children: [
+                            ProvinceWidget(
+                                Colors.white,
+                                _caseModel![index].province,
+                                formatter.format(_caseModel![index].newCase),
+                                formatter.format(_caseModel![index].newDeath),
+                                formatter.format(_caseModel![index].totalCase),
+                                formatter.format(_caseModel![index].totalDeath))
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                }));
+                    );
+                  })),
+    );
   }
 }

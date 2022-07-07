@@ -1,42 +1,24 @@
 import 'package:covidapp/widgets/DaysLeft.dart';
+import 'package:covidapp/widgets/button_widget.dart';
 import 'package:covidapp/widgets/duration.dart';
 import 'package:covidapp/widgets/durationText.dart';
+import 'package:covidapp/widgets/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 
-class IsolationPage extends StatelessWidget {
+class IsolationPage extends StatefulWidget {
   const IsolationPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
+  State<IsolationPage> createState() => _IsolationPageState();
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
+class _IsolationPageState extends State<IsolationPage> {
+  DateTime dateTime = DateTime.now();
+  final DateTime endDate = DateTime.now().add(Duration(days: 14));
+  int later = 14;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,20 +32,6 @@ class _MyHomePageState extends State<MyHomePage> {
               color: Color.fromARGB(255, 154, 155, 159)),
         ),
         elevation: 0,
-        leading: IconButton(
-          onPressed: () => print("Debug"),
-          icon: const Icon(Icons.keyboard_arrow_left),
-          color: Color.fromARGB(255, 12, 134, 246),
-          iconSize: 40,
-        ),
-        actions: [
-          IconButton(
-            onPressed: () => print("Debug"),
-            icon: const Icon(Icons.menu),
-            color: Color.fromARGB(255, 12, 134, 246),
-            iconSize: 30,
-          ),
-        ],
       ),
       body: Column(
         children: [
@@ -73,38 +41,66 @@ class _MyHomePageState extends State<MyHomePage> {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(top: 60, bottom: 10),
-                  child: Daysleft(12),
+                  child: Daysleft(later),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Row(
-                        children: [
-                          DurationText('Until'),
-                          DurationTime('12/02/2022'),
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            Column(
+                              children: [
+                                DurationText('Starting Date'),
+                                DurationTime(
+                                    '${dateTime.day}/${dateTime.month}/${dateTime.year}'),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                      Row(
+                      Column(
                         children: [
                           DurationText('At'),
-                          DurationTime('12:00pm'),
+                          DurationTime(DateFormat('hh:mm a').format(dateTime)),
                         ],
                       ),
                     ],
                   ),
                 ),
+                ButtonWidget(
+                  onClicked: (() {
+                    Utils.showSheet(context, child: buildDateTimePicker(),
+                        onClicked: () {
+                      Navigator.pop(context);
+                      setState(() {
+                        later = endDate.difference(dateTime).inDays;
+                      });
+                    });
+                  }),
+                  label: 'Date & Time',
+                )
               ],
             ),
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+
+  Widget buildDateTimePicker() => SizedBox(
+        height: 180,
+        child: CupertinoDatePicker(
+          minimumYear: 2015,
+          maximumYear: DateTime.now().year,
+          initialDateTime: dateTime,
+          mode: CupertinoDatePickerMode.dateAndTime,
+          onDateTimeChanged: (dateTime) =>
+              setState(() => this.dateTime = dateTime),
+        ),
+      );
 }
