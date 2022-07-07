@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class NewCases extends StatelessWidget {
   String left;
-  int number;
+  String number;
   String path;
   VoidCallback actions;
 

@@ -9,39 +9,14 @@ import 'package:covidapp/widgets/BannerWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:covidapp/api/api_service.dart';
-import 'package:covidapp/models/CaseModels.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-// instance variables
-late List<CaseModel>? _caseModel = []; //empty for now
-//data will come from the server
-
-@override
-void initState() {
-  initState();
-  _getData();
-}
-
-//function to get data from api service
-void _getData() async {
-  _caseModel = (await ApiService().getCases())!;
-
-  // Simulate QUERY time for the real API call
-  // Future.delayed(const Duration(seconds: 1)).then((value) => setState(() {}));
-}
-
-class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

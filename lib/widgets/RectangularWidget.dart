@@ -35,7 +35,7 @@ class RectangularWidget extends StatelessWidget {
                   style: GoogleFonts.kameron(
                       fontWeight: FontWeight.bold,
                       color: Colors.grey,
-                      fontSize: 35),
+                      fontSize: 25),
                 ),
               ),
             ),
