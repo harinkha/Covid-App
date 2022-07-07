@@ -10,6 +10,7 @@ import 'package:covidapp/api/api_service_cases.dart';
 import 'package:covidapp/api/api_service_provinces.dart';
 import 'package:covidapp/models/ProvinceModels.dart';
 import 'package:intl/intl.dart';
+import 'package:covidapp/widgets/provinceWidget.dart';
 
 class ProvinceTab extends StatefulWidget {
   const ProvinceTab({Key? key}) : super(key: key);
@@ -50,29 +51,20 @@ class _ProvinceTabState extends State<ProvinceTab> {
             : ListView.builder(
                 itemCount: _caseModel!.length,
                 itemBuilder: (context, index) {
-                  return Card(
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text(_caseModel![index].newCase.toString()),
-                            Text(_caseModel![index].province.toString()),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 20.0,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text(_caseModel![index].newDeath.toString()),
-                            Text(_caseModel![index]
-                                .newCaseExcludeabroad
-                                .toString()),
-                          ],
-                        ),
-                      ],
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Card(
+                      child: Column(
+                        children: [
+                          ProvinceWidget(
+                              Colors.white,
+                              _caseModel![index].province,
+                              formatter.format(_caseModel![index].newCase),
+                              formatter.format(_caseModel![index].newDeath),
+                              formatter.format(_caseModel![index].totalCase),
+                              formatter.format(_caseModel![index].totalDeath))
+                        ],
+                      ),
                     ),
                   );
                 }));
