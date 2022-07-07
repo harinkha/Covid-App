@@ -29,13 +29,13 @@ class RectangularWidget extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Align(
-                alignment: Alignment.topCenter,
+                alignment: Alignment.center,
                 child: Text(
                   number,
                   style: GoogleFonts.kameron(
                       fontWeight: FontWeight.bold,
                       color: Colors.grey,
-                      fontSize: 57),
+                      fontSize: 35),
                 ),
               ),
             ),

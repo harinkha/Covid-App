@@ -60,7 +60,7 @@ class NewCases extends StatelessWidget {
                     style: GoogleFonts.openSans(
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
-                        fontSize: 70),
+                        fontSize: 40),
                   ),
                 ),
               )
