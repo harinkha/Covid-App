@@ -40,13 +40,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var notifyHelper = NotifyHelper();
-  @override
-  void initState() {
-    super.initState();
-    notifyHelper.requestIOSPermissions();
-  }
-
   @override
   Widget build(BuildContext context) => CupertinoTabScaffold(
       tabBar: CupertinoTabBar(

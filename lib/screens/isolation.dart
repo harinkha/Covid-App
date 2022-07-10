@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
+import 'package:covidapp/services/notification_service.dart';
 
 class IsolationPage extends StatefulWidget {
   const IsolationPage({Key? key}) : super(key: key);
@@ -16,6 +17,14 @@ class IsolationPage extends StatefulWidget {
 }
 
 class _IsolationPageState extends State<IsolationPage> {
+  var notifyHelper = NotifyHelper();
+  @override
+  void initState() {
+    super.initState();
+    notifyHelper.initializeNotification();
+    notifyHelper.requestIOSPermissions();
+  }
+
   DateTime dateTime = DateTime.now();
   final DateTime endDate = DateTime.now().add(Duration(days: 14));
   int later = 14;
@@ -86,6 +95,17 @@ class _IsolationPageState extends State<IsolationPage> {
               ],
             ),
           ),
+          GestureDetector(
+            onTap: () {
+              notifyHelper.displayNotification(
+                  title: "Successful", body: "Pushed");
+              notifyHelper.scheduledNotification();
+            },
+            child: Icon(
+              Icons.hdr_plus_rounded,
+              size: 28,
+            ),
+          )
         ],
       ),
       // This trailing comma makes auto-formatting nicer for build methods.
