@@ -1,5 +1,6 @@
 import 'package:covidapp/screens/homepage.dart';
 import 'package:covidapp/screens/isolation.dart';
+import 'package:covidapp/services/notification_service.dart';
 import 'package:covidapp/widgets/DaysLeft.dart';
 import 'package:covidapp/widgets/ScrollableRowIcons.dart';
 import 'package:covidapp/widgets/dailycases.dart';
@@ -39,7 +40,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  var notifyHelper = NotifyHelper();
+  @override
+  void initState() {
+    super.initState();
+    notifyHelper.requestIOSPermissions();
+  }
 
   @override
   Widget build(BuildContext context) => CupertinoTabScaffold(
