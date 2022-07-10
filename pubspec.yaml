@@ -40,6 +40,7 @@ dependencies:
   flutter_native_timezone: 
   get: 
   firebase_core: ^1.19.1
+  date_picker_timeline: 
 
 dev_dependencies:
   flutter_test:
