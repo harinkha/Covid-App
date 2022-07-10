@@ -54,9 +54,7 @@ class _ReminderState extends State<ReminderPage> {
             ),
           ),
           AddTaskButton(
-              label: "+ Add Task",
-              onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => AddTaskPage())))
+              label: "+ Add Task", onTap: () => Get.to(() => AddTaskPage()))
         ],
       ),
     );

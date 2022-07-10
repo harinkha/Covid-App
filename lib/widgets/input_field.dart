@@ -42,6 +42,7 @@ class MyInputField extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                        readOnly: widget == null ? false : true,
                         autofocus: false,
                         cursorColor: Colors.grey[700],
                         controller: controller,
@@ -63,7 +64,12 @@ class MyInputField extends StatelessWidget {
                           ),
                         )),
                   ),
-                )
+                ),
+                widget == null
+                    ? Container()
+                    : Container(
+                        child: widget,
+                      ),
               ],
             ),
           )

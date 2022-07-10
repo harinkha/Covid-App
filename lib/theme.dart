@@ -36,3 +36,13 @@ TextStyle get subtitleStyle {
     ),
   );
 }
+
+TextStyle get warningStyle {
+  return GoogleFonts.lato(
+    textStyle: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: Colors.red,
+    ),
+  );
+}
