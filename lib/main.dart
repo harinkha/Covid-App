@@ -1,5 +1,6 @@
 import 'package:covidapp/screens/homepage.dart';
 import 'package:covidapp/screens/isolation.dart';
+import 'package:covidapp/screens/reminderpage.dart';
 import 'package:covidapp/services/notification_service.dart';
 import 'package:covidapp/widgets/DaysLeft.dart';
 import 'package:covidapp/widgets/ScrollableRowIcons.dart';
@@ -51,6 +52,8 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
               label: 'Quarantine', icon: Icon(CupertinoIcons.lab_flask_solid)),
           BottomNavigationBarItem(
+              label: 'Reminders', icon: Icon(CupertinoIcons.bell_circle)),
+          BottomNavigationBarItem(
               label: 'Profile', icon: Icon(CupertinoIcons.person)),
         ],
       ),
@@ -61,8 +64,10 @@ class _MyHomePageState extends State<MyHomePage> {
           case 1:
             return IsolationPage();
           case 2:
+            return ReminderPage();
+          case 3:
           default:
-            return HomePage();
+            return ReminderPage();
         }
       });
 }

@@ -39,6 +39,7 @@ dependencies:
   flutter_local_notifications: 
   flutter_native_timezone: 
   get: 
+  firebase_core: ^1.19.1
 
 dev_dependencies:
   flutter_test:
