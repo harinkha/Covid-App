@@ -38,10 +38,8 @@ dependencies:
   intl: ^0.17.0
   flutter_local_notifications: 
   flutter_native_timezone: 
-  get: 
-  get_storage: 
-  firebase_core: ^1.19.1
-  date_picker_timeline: 
+  get:
+  date_picker_timeline:  
 
 dev_dependencies:
   flutter_test:
