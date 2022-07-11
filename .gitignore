@@ -1,3 +1,6 @@
+
+
+
 # Miscellaneous
 *.class
 *.log
@@ -32,6 +35,8 @@ migrate_working_dir/
 .pub/
 /build/
 
+ios/Runner/GoogleService-Info.plist
+android/app/GoogleService.json
 # Web related
 lib/generated_plugin_registrant.dart
 
