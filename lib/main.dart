@@ -1,17 +1,10 @@
 import 'package:covidapp/screens/homepage.dart';
 import 'package:covidapp/screens/isolation.dart';
+import 'package:covidapp/screens/loginpage.dart';
 import 'package:covidapp/screens/reminderpage.dart';
-import 'package:covidapp/services/notification_service.dart';
-import 'package:covidapp/widgets/DaysLeft.dart';
-import 'package:covidapp/widgets/ScrollableRowIcons.dart';
-import 'package:covidapp/widgets/dailycases.dart';
-import 'package:covidapp/widgets/duration.dart';
-import 'package:covidapp/widgets/durationText.dart';
-import 'package:covidapp/widgets/BannerWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(const MyApp());
@@ -68,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
             return ReminderPage();
           case 3:
           default:
-            return ReminderPage();
+            return LoginPage();
         }
       });
 }

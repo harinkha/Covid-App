@@ -249,6 +249,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
     return AppBar(
       backgroundColor: Color.fromARGB(255, 242, 249, 255),
       elevation: 0,
+      centerTitle: true,
       leading: GestureDetector(
         onTap: () {
           Navigator.pop(context);
