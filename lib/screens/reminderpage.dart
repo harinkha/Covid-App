@@ -1,10 +1,9 @@
+import 'package:covidapp/services/firestore_service.dart';
 import 'package:covidapp/theme.dart';
 import 'package:covidapp/widgets/add_task_bar.dart';
 import 'package:covidapp/widgets/add_task_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -19,12 +18,6 @@ class ReminderPage extends StatefulWidget {
 }
 
 class _ReminderState extends State<ReminderPage> {
-  @override
-  // void initState() {
-  //   WidgetsFlutterBinding.ensureInitialized();
-  //   Firebase.initializeApp();
-  // }
-
   final CollectionReference _tasks =
       FirebaseFirestore.instance.collection('tasks');
   DateTime _selectedDate = DateTime.now();
@@ -37,19 +30,70 @@ class _ReminderState extends State<ReminderPage> {
         children: [
           _addTaskBar(),
           _addDateBar(),
-          StreamBuilder(
-              stream: _tasks.snapshots(),
-              builder: ((context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-                if (streamSnapshot.hasData) {
-                  final docsnap = streamSnapshot.data!.docs[0];
-                  return Text(docsnap['title']);
-                } else {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              }))
+          // _showTasks(),
+          ElevatedButton(
+              onPressed: (() {
+                print(FirestoreService().getTasks().asStream());
+              }),
+              child: Text("tap me"))
+          // StreamBuilder(
+          //     stream: _tasks.snapshots(),
+          //     builder: ((context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+          //       if (streamSnapshot.hasData) {
+          //         return Expanded(
+          //           child: ListView.builder(
+          //               itemCount: streamSnapshot.data!.docs.length,
+          //               itemBuilder: (context, index) {
+          //                 final docsnap = streamSnapshot.data!.docs[index];
+          //                 return AnimationConfiguration.staggeredList(
+          //                     position: index,
+          //                     child: SlideAnimation(
+          //                       child: FadeInAnimation(
+          //                         child: Row(
+          //                           children: [
+          //                             GestureDetector(
+          //                               onTap: (() {
+          //                                 print("Tapped");
+          //                               }),
+          //                               child: Text(docsnap['title']),
+          //                             )
+          //                           ],
+          //                         ),
+          //                       ),
+          //                     ));
+
+          //                 // return Container(
+          //                 //   width: 100,
+          //                 //   height: 50,
+          //                 //   color: Colors.green,
+          //                 //   margin: EdgeInsets.only(bottom: 10),
+          //                 //   child: Text(docsnap['title']),
+          //                 // );
+          //               }),
+          //         );
+          //       } else {
+          //         return Center(
+          //           child: CircularProgressIndicator(),
+          //         );
+          //       }
+          //     }))
         ],
+      ),
+    );
+  }
+
+  _showTasks() {
+    return Expanded(
+      child: ListView.builder(
+        itemCount: 2,
+        itemBuilder: (_, context) {
+          return Container(
+            width: 100,
+            height: 50,
+            color: Colors.green,
+            margin: EdgeInsets.only(bottom: 10),
+          );
+        },
       ),
     );
   }

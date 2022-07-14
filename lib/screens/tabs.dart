@@ -1,6 +1,7 @@
 import 'package:covidapp/screens/homepage.dart';
 import 'package:covidapp/screens/isolation.dart';
 import 'package:covidapp/screens/loginpage.dart';
+import 'package:covidapp/screens/profilepage.dart';
 import 'package:covidapp/screens/reminderpage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +45,7 @@ class _TabViewsState extends State<TabViews> {
               return ReminderPage();
             case 3:
             default:
-              return LoginPage();
+              return ProfilePage();
           }
         });
   }

@@ -2,7 +2,9 @@ import 'package:covidapp/screens/homepage.dart';
 import 'package:covidapp/screens/isolation.dart';
 import 'package:covidapp/screens/loginpage.dart';
 import 'package:covidapp/screens/reminderpage.dart';
+import 'package:covidapp/screens/splashscreen.dart';
 import 'package:covidapp/screens/tabs.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,24 +28,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const SplashScreen(),
     );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  final CollectionReference _tasks =
-      FirebaseFirestore.instance.collection('tasks');
-  @override
-  Widget build(BuildContext context) {
-    return TabViews();
   }
 }
