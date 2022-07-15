@@ -51,11 +51,13 @@ class _LoginPageState extends State<LoginPage> {
               MyInputField(
                 title: "Email",
                 hint: "Enter your Email",
+                hide: false,
                 controller: _emailController,
               ),
               MyInputField(
                 title: "Password",
                 hint: "Enter your Password",
+                hide: true,
                 controller: _passwordController,
               ),
               Padding(
@@ -64,42 +66,48 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    AddTaskButton(
-                        label: "Log In",
-                        onTap: () async {
-                          await FirebaseAuth.instance
-                              .signInWithEmailAndPassword(
-                            email: _emailController.text,
-                            password: _passwordController.text,
-                          );
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: (context) => TabViews()));
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: AddTaskButton(
+                          label: "Log In",
+                          onTap: () async {
+                            await FirebaseAuth.instance
+                                .signInWithEmailAndPassword(
+                              email: _emailController.text,
+                              password: _passwordController.text,
+                            );
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) => TabViews()));
 
-                          setState(() {
-                            if (FirebaseAuth.instance.currentUser != null) {
-                              test = 'Logged in';
-                              print(test);
-                              print(FirebaseAuth.instance.currentUser?.email);
-                            }
-                          });
-                        }),
-                    AddTaskButton(
-                        label: "Sign Up",
-                        onTap: () async {
-                          await FirebaseAuth.instance
-                              .createUserWithEmailAndPassword(
-                            email: _emailController.text,
-                            password: _passwordController.text,
-                          );
-                          _emailController.clear();
-                          _passwordController.clear();
-                          Get.snackbar(
-                              "Sign Up Successful", "Please Proceed to Log In",
-                              snackPosition: SnackPosition.BOTTOM,
-                              backgroundColor: Colors.green,
-                              icon: Icon(Icons.done_outline));
-                        })
+                            setState(() {
+                              if (FirebaseAuth.instance.currentUser != null) {
+                                test = 'Logged in';
+                                print(test);
+                                print(FirebaseAuth.instance.currentUser?.email);
+                              }
+                            });
+                          }),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: AddTaskButton(
+                          label: "Sign Up",
+                          onTap: () async {
+                            await FirebaseAuth.instance
+                                .createUserWithEmailAndPassword(
+                              email: _emailController.text,
+                              password: _passwordController.text,
+                            );
+                            _emailController.clear();
+                            _passwordController.clear();
+                            Get.snackbar("Sign Up Successful",
+                                "Please Proceed to Log In",
+                                snackPosition: SnackPosition.BOTTOM,
+                                backgroundColor: Colors.green,
+                                icon: Icon(Icons.done_outline));
+                          }),
+                    )
                   ],
                 ),
               )

@@ -6,12 +6,14 @@ import 'package:flutter/src/widgets/framework.dart';
 class MyInputField extends StatelessWidget {
   final String title;
   final String hint;
+  final bool hide;
   final TextEditingController? controller;
   final Widget? widget;
   const MyInputField({
     Key? key,
     required this.title,
     required this.hint,
+    required this.hide,
     this.controller,
     this.widget,
   }) : super(key: key);
@@ -42,6 +44,7 @@ class MyInputField extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                        obscureText: hide,
                         readOnly: widget == null ? false : true,
                         autofocus: false,
                         cursorColor: Colors.grey[700],

@@ -53,16 +53,19 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 style: HeadingStyle,
               ),
               MyInputField(
+                hide: false,
                 title: "Title",
                 hint: "Enter your Title",
                 controller: _titleController,
               ),
               MyInputField(
+                hide: false,
                 title: "Note",
                 hint: "Enter your Note",
                 controller: _noteController,
               ),
               MyInputField(
+                hide: false,
                 title: "Date",
                 hint: DateFormat.yMd().format(_selectedDate),
                 widget: IconButton(
@@ -79,6 +82,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 children: [
                   Expanded(
                     child: MyInputField(
+                      hide: false,
                       title: "Start Date",
                       hint: _startTime,
                       widget: IconButton(
@@ -97,6 +101,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   ),
                   Expanded(
                     child: MyInputField(
+                      hide: false,
                       title: "End Date",
                       hint: _endTime,
                       widget: IconButton(
@@ -113,6 +118,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 ],
               ),
               MyInputField(
+                hide: false,
                 title: "Remind",
                 hint: "$_selectedRemind minutes early",
                 widget: DropdownButton(
@@ -140,6 +146,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 ),
               ),
               MyInputField(
+                hide: false,
                 title: "Repeat",
                 hint: "$_selectedRepeat",
                 widget: DropdownButton(
