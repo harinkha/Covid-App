@@ -1,12 +1,15 @@
+import 'package:covidapp/models/taskModel.dart';
 import 'package:covidapp/theme.dart';
 import 'package:covidapp/widgets/add_task_button.dart';
 import 'package:covidapp/widgets/input_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AddTaskPage extends StatefulWidget {
   const AddTaskPage({Key? key}) : super(key: key);
@@ -16,6 +19,8 @@ class AddTaskPage extends StatefulWidget {
 }
 
 class _AddTaskPageState extends State<AddTaskPage> {
+  final db = FirebaseFirestore.instance;
+  Task task = Task('', '', '', false, '', '', '');
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _noteController = TextEditingController();
   String error = "";
@@ -188,7 +193,17 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       style: warningStyle,
                     ),
                     AddTaskButton(
-                        label: "Create Task", onTap: () => _validateDate())
+                        label: "Create Task",
+                        onTap: () async {
+                          _addTaskToDb();
+                          final uid =
+                              await FirebaseAuth.instance.currentUser?.uid;
+                          await db
+                              .collection('userData')
+                              .doc(uid)
+                              .collection('tasks')
+                              .add(task.toJson());
+                        })
                   ],
                 ),
               )
@@ -202,6 +217,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   _validateDate() {
     if (_titleController.text.isNotEmpty && _noteController.text.isNotEmpty) {
       //add to database
+
       Navigator.pop(context);
     } else if (_titleController.text.isEmpty || _noteController.text.isEmpty) {
       Get.snackbar("Required", "All fields are required !",
@@ -250,6 +266,11 @@ class _AddTaskPageState extends State<AddTaskPage> {
           hour: int.parse(_startTime.split(":")[0]),
           minute: int.parse(_startTime.split(":")[1].split(" ")[0])),
     );
+  }
+
+  _addTaskToDb() {
+    task = Task(_titleController.text, DateFormat.yMd().format(_selectedDate),
+        _endTime, false, _noteController.text, _selectedRepeat, _startTime);
   }
 
   _addAppBar(BuildContext context) {
