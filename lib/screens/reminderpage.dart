@@ -1,7 +1,10 @@
+import 'package:covidapp/models/taskModel.dart';
 import 'package:covidapp/services/firestore_service.dart';
 import 'package:covidapp/theme.dart';
 import 'package:covidapp/widgets/add_task_bar.dart';
 import 'package:covidapp/widgets/add_task_button.dart';
+import 'package:covidapp/widgets/tasktile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,8 +21,11 @@ class ReminderPage extends StatefulWidget {
 }
 
 class _ReminderState extends State<ReminderPage> {
-  final CollectionReference _tasks =
-      FirebaseFirestore.instance.collection('tasks');
+  final _tasks = FirebaseFirestore.instance
+      .collection('userData')
+      .doc(FirebaseAuth.instance.currentUser?.uid)
+      .collection('tasks');
+
   DateTime _selectedDate = DateTime.now();
   @override
   Widget build(BuildContext context) {
@@ -31,72 +37,76 @@ class _ReminderState extends State<ReminderPage> {
           _addTaskBar(),
           _addDateBar(),
           // _showTasks(),
-          ElevatedButton(
-              onPressed: (() {
-                print(FirestoreService().getTasks().asStream());
-              }),
-              child: Text("tap me"))
-          // StreamBuilder(
-          //     stream: _tasks.snapshots(),
-          //     builder: ((context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-          //       if (streamSnapshot.hasData) {
-          //         return Expanded(
-          //           child: ListView.builder(
-          //               itemCount: streamSnapshot.data!.docs.length,
-          //               itemBuilder: (context, index) {
-          //                 final docsnap = streamSnapshot.data!.docs[index];
-          //                 return AnimationConfiguration.staggeredList(
-          //                     position: index,
-          //                     child: SlideAnimation(
-          //                       child: FadeInAnimation(
-          //                         child: Row(
-          //                           children: [
-          //                             GestureDetector(
-          //                               onTap: (() {
-          //                                 print("Tapped");
-          //                               }),
-          //                               child: Text(docsnap['title']),
-          //                             )
-          //                           ],
-          //                         ),
-          //                       ),
-          //                     ));
 
-          //                 // return Container(
-          //                 //   width: 100,
-          //                 //   height: 50,
-          //                 //   color: Colors.green,
-          //                 //   margin: EdgeInsets.only(bottom: 10),
-          //                 //   child: Text(docsnap['title']),
-          //                 // );
-          //               }),
-          //         );
-          //       } else {
-          //         return Center(
-          //           child: CircularProgressIndicator(),
-          //         );
-          //       }
-          //     }))
+          StreamBuilder(
+              stream: _tasks.snapshots(),
+              builder: ((context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                if (streamSnapshot.hasData) {
+                  return Expanded(
+                    child: ListView.builder(
+                        itemCount: streamSnapshot.data!.docs.length,
+                        itemBuilder: (context, index) {
+                          final docsnap = streamSnapshot.data!.docs[index];
+                          return AnimationConfiguration.staggeredList(
+                              position: index,
+                              child: SlideAnimation(
+                                child: FadeInAnimation(
+                                  child: Row(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: (() {
+                                          print("Tapped");
+                                        }),
+                                        child: TaskTile(
+                                            docsnap['title'],
+                                            docsnap['endTime'],
+                                            docsnap['startTime'],
+                                            docsnap['note'],
+                                            docsnap['date'],
+                                            docsnap['isCompleted'],
+                                            docsnap['repeat']),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ));
+
+                          // return Container(
+                          //   width: 100,
+                          //   height: 50,
+                          //   color: Colors.green,
+                          //   margin: EdgeInsets.only(bottom: 10),
+                          //   child: Text(docsnap['title']),
+                          // );
+                        }),
+                  );
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              }))
         ],
       ),
     );
   }
 
-  _showTasks() {
-    return Expanded(
-      child: ListView.builder(
-        itemCount: 2,
-        itemBuilder: (_, context) {
-          return Container(
-            width: 100,
-            height: 50,
-            color: Colors.green,
-            margin: EdgeInsets.only(bottom: 10),
-          );
-        },
-      ),
-    );
-  }
+  // _showTasks() {
+  //   return Expanded(
+  //     child: ListView.builder(
+  //       itemCount: 2,
+  //       itemBuilder: (_, context) {
+  //         return Container(
+  //           width: 100,
+  //           height: 50,
+  //           color: Colors.green,
+  //           margin: EdgeInsets.only(bottom: 10),
+  //           child: TaskTile(task),
+  //         );
+  //       },
+  //     ),
+  //   );
+  // }
 
   _addTaskBar() {
     return Container(

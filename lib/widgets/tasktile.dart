@@ -4,8 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TaskTile extends StatelessWidget {
-  final Task? task;
-  TaskTile(this.task);
+  final String? title;
+  final String? endTime;
+  final String? startTime;
+  final String? note;
+  final String? date;
+  final bool? isCompleted;
+  final String? repeat;
+
+  TaskTile(this.title, this.endTime, this.startTime, this.note, this.date,
+      this.isCompleted, this.repeat);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +32,7 @@ class TaskTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  task?.title ?? "",
+                  title ?? "",
                   style: GoogleFonts.lato(
                     textStyle: TextStyle(
                         fontSize: 16,
@@ -45,7 +53,7 @@ class TaskTile extends StatelessWidget {
                     ),
                     SizedBox(width: 4),
                     Text(
-                      "${task!.startTime} - ${task!.endTime}",
+                      "${startTime!} - ${endTime!}",
                       style: GoogleFonts.lato(
                         textStyle:
                             TextStyle(fontSize: 13, color: Colors.grey[100]),
@@ -55,7 +63,7 @@ class TaskTile extends StatelessWidget {
                 ),
                 SizedBox(height: 12),
                 Text(
-                  task?.note ?? "",
+                  note ?? "",
                   style: GoogleFonts.lato(
                     textStyle: TextStyle(fontSize: 15, color: Colors.grey[100]),
                   ),
@@ -72,7 +80,7 @@ class TaskTile extends StatelessWidget {
           RotatedBox(
             quarterTurns: 3,
             child: Text(
-              task!.isCompleted == true ? "COMPLETED" : "TODO",
+              isCompleted == true ? "COMPLETED" : "TODO",
               style: GoogleFonts.lato(
                 textStyle: TextStyle(
                     fontSize: 10,
