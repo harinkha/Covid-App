@@ -71,14 +71,41 @@ class _LoginPageState extends State<LoginPage> {
                       child: AddTaskButton(
                           label: "Log In",
                           onTap: () async {
-                            await FirebaseAuth.instance
-                                .signInWithEmailAndPassword(
-                              email: _emailController.text,
-                              password: _passwordController.text,
-                            );
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (context) => TabViews()));
+                            try {
+                              await FirebaseAuth.instance
+                                  .signInWithEmailAndPassword(
+                                email: _emailController.text,
+                                password: _passwordController.text,
+                              );
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) => TabViews()));
+                            } on FirebaseAuthException catch (e) {
+                              print(e.code);
+                              switch (e.code) {
+                                case "invalid-email":
+                                case "wrong-password":
+                                case "user-not-found":
+                                  {
+                                    Get.snackbar(
+                                        "Error", "Wrong Email or Password",
+                                        snackPosition: SnackPosition.BOTTOM,
+                                        backgroundColor: Colors.red,
+                                        icon:
+                                            Icon(Icons.warning_amber_outlined));
+                                    break;
+                                  }
+                                case "user-disabled":
+                                  {
+                                    Get.snackbar("Error", "User is disabled",
+                                        snackPosition: SnackPosition.BOTTOM,
+                                        backgroundColor: Colors.red,
+                                        icon:
+                                            Icon(Icons.warning_amber_outlined));
+                                    break;
+                                  }
+                              }
+                            }
 
                             setState(() {
                               if (FirebaseAuth.instance.currentUser != null) {
@@ -94,18 +121,53 @@ class _LoginPageState extends State<LoginPage> {
                       child: AddTaskButton(
                           label: "Sign Up",
                           onTap: () async {
-                            await FirebaseAuth.instance
-                                .createUserWithEmailAndPassword(
-                              email: _emailController.text,
-                              password: _passwordController.text,
-                            );
-                            _emailController.clear();
-                            _passwordController.clear();
-                            Get.snackbar("Sign Up Successful",
-                                "Please Proceed to Log In",
-                                snackPosition: SnackPosition.BOTTOM,
-                                backgroundColor: Colors.green,
-                                icon: Icon(Icons.done_outline));
+                            try {
+                              await FirebaseAuth.instance
+                                  .createUserWithEmailAndPassword(
+                                email: _emailController.text,
+                                password: _passwordController.text,
+                              );
+                              _emailController.clear();
+                              _passwordController.clear();
+                              Get.snackbar("Sign Up Successful",
+                                  "Please Proceed to Log In",
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  backgroundColor: Colors.green,
+                                  icon: Icon(Icons.done_outline));
+                            } on FirebaseAuthException catch (e) {
+                              switch (e.code) {
+                                case "email-already-in-use":
+                                  {
+                                    Get.snackbar(
+                                        "Error", "Email already in use",
+                                        snackPosition: SnackPosition.BOTTOM,
+                                        backgroundColor: Colors.red,
+                                        icon:
+                                            Icon(Icons.warning_amber_outlined));
+                                    break;
+                                  }
+                                case "weak-password":
+                                  {
+                                    Get.snackbar("Weak Password",
+                                        "Password should be at least 6 characters",
+                                        snackPosition: SnackPosition.BOTTOM,
+                                        backgroundColor: Colors.red,
+                                        icon:
+                                            Icon(Icons.warning_amber_outlined));
+                                    break;
+                                  }
+                                case "invalid-email":
+                                  {
+                                    Get.snackbar(
+                                        "Invalid Email", "Enter a valid Email",
+                                        snackPosition: SnackPosition.BOTTOM,
+                                        backgroundColor: Colors.red,
+                                        icon:
+                                            Icon(Icons.warning_amber_outlined));
+                                    break;
+                                  }
+                              }
+                            }
                           }),
                     )
                   ],
