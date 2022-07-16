@@ -36,72 +36,58 @@ class _ReminderState extends State<ReminderPage> {
         children: [
           _addTaskBar(),
           _addDateBar(),
-          // _showTasks(),
-
-          StreamBuilder(
-              stream: _tasks.snapshots(),
-              builder: ((context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-                if (streamSnapshot.hasData) {
-                  return Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 25),
-                      child: ListView.builder(
-                          itemCount: streamSnapshot.data!.docs.length,
-                          itemBuilder: (context, index) {
-                            final docsnap = streamSnapshot.data!.docs[index];
-                            return AnimationConfiguration.staggeredList(
-                                position: index,
-                                child: SlideAnimation(
-                                  child: FadeInAnimation(
-                                    child: Row(
-                                      children: [
-                                        GestureDetector(
-                                          onTap: (() {
-                                            print("Tapped");
-                                          }),
-                                          child: TaskTile(
-                                              docsnap['title'],
-                                              docsnap['endTime'],
-                                              docsnap['startTime'],
-                                              docsnap['note'],
-                                              docsnap['date'],
-                                              docsnap['isCompleted'],
-                                              docsnap['repeat']),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ));
-                          }),
-                    ),
-                  );
-                } else {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              }))
+          _showTasks(),
         ],
       ),
     );
   }
 
-  // _showTasks() {
-  //   return Expanded(
-  //     child: ListView.builder(
-  //       itemCount: 2,
-  //       itemBuilder: (_, context) {
-  //         return Container(
-  //           width: 100,
-  //           height: 50,
-  //           color: Colors.green,
-  //           margin: EdgeInsets.only(bottom: 10),
-  //           child: TaskTile(task),
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }
+  _showTasks() {
+    return StreamBuilder(
+        stream: _tasks.snapshots(),
+        builder: ((context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+          if (streamSnapshot.hasData) {
+            return Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 25),
+                child: ListView.builder(
+                    itemCount: streamSnapshot.data!.docs.length,
+                    itemBuilder: (context, index) {
+                      final docsnap = streamSnapshot.data!.docs[index];
+                      return AnimationConfiguration.staggeredList(
+                          position: index,
+                          child: SlideAnimation(
+                            child: FadeInAnimation(
+                              child: Row(
+                                children: [
+                                  GestureDetector(
+                                    onTap: (() {
+                                      _showBottomSheet(
+                                          context, docsnap['isCompleted']);
+                                    }),
+                                    child: TaskTile(
+                                        docsnap['title'],
+                                        docsnap['endTime'],
+                                        docsnap['startTime'],
+                                        docsnap['note'],
+                                        docsnap['date'],
+                                        docsnap['isCompleted'],
+                                        docsnap['repeat']),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ));
+                    }),
+              ),
+            );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        }));
+  }
 
   _addTaskBar() {
     return Container(
@@ -155,6 +141,28 @@ class _ReminderState extends State<ReminderPage> {
         },
       ),
     );
+  }
+
+  _showBottomSheet(BuildContext context, bool isCompleted) {
+    Get.bottomSheet(Container(
+      padding: const EdgeInsets.only(top: 4),
+      height: isCompleted == true
+          ? MediaQuery.of(context).size.height * 0.24
+          : MediaQuery.of(context).size.height * 0.32,
+      color: Colors.white,
+      child: Column(
+        children: [
+          Container(
+            height: 6,
+            width: 120,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.grey[300],
+            ),
+          )
+        ],
+      ),
+    ));
   }
 }
 
