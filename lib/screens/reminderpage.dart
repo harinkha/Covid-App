@@ -53,30 +53,61 @@ class _ReminderState extends State<ReminderPage> {
                     itemCount: streamSnapshot.data!.docs.length,
                     itemBuilder: (context, index) {
                       final docsnap = streamSnapshot.data!.docs[index];
-                      return AnimationConfiguration.staggeredList(
-                          position: index,
-                          child: SlideAnimation(
-                            child: FadeInAnimation(
-                              child: Row(
-                                children: [
-                                  GestureDetector(
-                                    onTap: (() {
-                                      _showBottomSheet(context,
-                                          docsnap['isCompleted'], docsnap.id);
-                                    }),
-                                    child: TaskTile(
-                                        docsnap['title'],
-                                        docsnap['endTime'],
-                                        docsnap['startTime'],
-                                        docsnap['note'],
-                                        docsnap['date'],
-                                        docsnap['isCompleted'],
-                                        docsnap['repeat']),
-                                  )
-                                ],
+                      if (docsnap['repeat'] == 'Daily') {
+                        return AnimationConfiguration.staggeredList(
+                            position: index,
+                            child: SlideAnimation(
+                              child: FadeInAnimation(
+                                child: Row(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: (() {
+                                        _showBottomSheet(context,
+                                            docsnap['isCompleted'], docsnap.id);
+                                      }),
+                                      child: TaskTile(
+                                          docsnap['title'],
+                                          docsnap['endTime'],
+                                          docsnap['startTime'],
+                                          docsnap['note'],
+                                          docsnap['date'],
+                                          docsnap['isCompleted'],
+                                          docsnap['repeat']),
+                                    )
+                                  ],
+                                ),
                               ),
-                            ),
-                          ));
+                            ));
+                      }
+                      if (docsnap['date'] ==
+                          DateFormat.yMd().format(_selectedDate)) {
+                        return AnimationConfiguration.staggeredList(
+                            position: index,
+                            child: SlideAnimation(
+                              child: FadeInAnimation(
+                                child: Row(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: (() {
+                                        _showBottomSheet(context,
+                                            docsnap['isCompleted'], docsnap.id);
+                                      }),
+                                      child: TaskTile(
+                                          docsnap['title'],
+                                          docsnap['endTime'],
+                                          docsnap['startTime'],
+                                          docsnap['note'],
+                                          docsnap['date'],
+                                          docsnap['isCompleted'],
+                                          docsnap['repeat']),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ));
+                      } else {
+                        return Container();
+                      }
                     }),
               ),
             );
@@ -136,7 +167,9 @@ class _ReminderState extends State<ReminderPage> {
             textStyle: TextStyle(
                 fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey)),
         onDateChange: (date) {
-          _selectedDate = date;
+          setState(() {
+            _selectedDate = date;
+          });
         },
       ),
     );
