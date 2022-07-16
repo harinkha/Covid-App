@@ -1,4 +1,5 @@
 import 'package:covidapp/models/taskModel.dart';
+import 'package:covidapp/screens/reminderpage.dart';
 import 'package:covidapp/theme.dart';
 import 'package:covidapp/widgets/add_task_button.dart';
 import 'package:covidapp/widgets/input_field.dart';
@@ -203,6 +204,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                               .doc(uid)
                               .collection('tasks')
                               .add(task.toJson());
+                          Get.back();
                         })
                   ],
                 ),

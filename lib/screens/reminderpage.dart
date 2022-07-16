@@ -43,42 +43,37 @@ class _ReminderState extends State<ReminderPage> {
               builder: ((context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                 if (streamSnapshot.hasData) {
                   return Expanded(
-                    child: ListView.builder(
-                        itemCount: streamSnapshot.data!.docs.length,
-                        itemBuilder: (context, index) {
-                          final docsnap = streamSnapshot.data!.docs[index];
-                          return AnimationConfiguration.staggeredList(
-                              position: index,
-                              child: SlideAnimation(
-                                child: FadeInAnimation(
-                                  child: Row(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: (() {
-                                          print("Tapped");
-                                        }),
-                                        child: TaskTile(
-                                            docsnap['title'],
-                                            docsnap['endTime'],
-                                            docsnap['startTime'],
-                                            docsnap['note'],
-                                            docsnap['date'],
-                                            docsnap['isCompleted'],
-                                            docsnap['repeat']),
-                                      )
-                                    ],
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 25),
+                      child: ListView.builder(
+                          itemCount: streamSnapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            final docsnap = streamSnapshot.data!.docs[index];
+                            return AnimationConfiguration.staggeredList(
+                                position: index,
+                                child: SlideAnimation(
+                                  child: FadeInAnimation(
+                                    child: Row(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: (() {
+                                            print("Tapped");
+                                          }),
+                                          child: TaskTile(
+                                              docsnap['title'],
+                                              docsnap['endTime'],
+                                              docsnap['startTime'],
+                                              docsnap['note'],
+                                              docsnap['date'],
+                                              docsnap['isCompleted'],
+                                              docsnap['repeat']),
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ));
-
-                          // return Container(
-                          //   width: 100,
-                          //   height: 50,
-                          //   color: Colors.green,
-                          //   margin: EdgeInsets.only(bottom: 10),
-                          //   child: Text(docsnap['title']),
-                          // );
-                        }),
+                                ));
+                          }),
+                    ),
                   );
                 } else {
                   return Center(
