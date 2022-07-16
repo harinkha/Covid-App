@@ -25,7 +25,6 @@ class _ReminderState extends State<ReminderPage> {
       .collection('userData')
       .doc(FirebaseAuth.instance.currentUser?.uid)
       .collection('tasks');
-
   DateTime _selectedDate = DateTime.now();
   @override
   Widget build(BuildContext context) {
@@ -62,8 +61,8 @@ class _ReminderState extends State<ReminderPage> {
                                 children: [
                                   GestureDetector(
                                     onTap: (() {
-                                      _showBottomSheet(
-                                          context, docsnap['isCompleted']);
+                                      _showBottomSheet(context,
+                                          docsnap['isCompleted'], docsnap.id);
                                     }),
                                     child: TaskTile(
                                         docsnap['title'],
@@ -143,7 +142,7 @@ class _ReminderState extends State<ReminderPage> {
     );
   }
 
-  _showBottomSheet(BuildContext context, bool isCompleted) {
+  _showBottomSheet(BuildContext context, bool isCompleted, String id) {
     Get.bottomSheet(Container(
       padding: const EdgeInsets.only(top: 4),
       height: isCompleted == true
@@ -166,6 +165,7 @@ class _ReminderState extends State<ReminderPage> {
               : _bottomSheetButton(
                   label: "Task Completed",
                   onTap: () {
+                    _tasks.doc(id).update({'isCompleted': true});
                     Get.back();
                   },
                   clr: Color(0xFF4e5ae8),
@@ -174,6 +174,7 @@ class _ReminderState extends State<ReminderPage> {
           _bottomSheetButton(
             label: "Delete Task",
             onTap: () {
+              _tasks.doc(id).delete();
               Get.back();
             },
             clr: Colors.red[300]!,
