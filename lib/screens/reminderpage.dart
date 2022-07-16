@@ -159,11 +159,72 @@ class _ReminderState extends State<ReminderPage> {
               borderRadius: BorderRadius.circular(10),
               color: Colors.grey[300],
             ),
-          )
+          ),
+          Spacer(),
+          isCompleted == true
+              ? Container()
+              : _bottomSheetButton(
+                  label: "Task Completed",
+                  onTap: () {
+                    Get.back();
+                  },
+                  clr: Color(0xFF4e5ae8),
+                  context: context,
+                ),
+          _bottomSheetButton(
+            label: "Delete Task",
+            onTap: () {
+              Get.back();
+            },
+            clr: Colors.red[300]!,
+            context: context,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          _bottomSheetButton(
+            label: "Close",
+            isClose: true,
+            onTap: () {
+              Get.back();
+            },
+            clr: Colors.red[300]!,
+            context: context,
+          ),
+          SizedBox(
+            height: 10,
+          ),
         ],
       ),
     ));
   }
+}
+
+_bottomSheetButton(
+    {required String label,
+    required Function()? onTap,
+    required Color clr,
+    bool isClose = false,
+    required BuildContext context}) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      margin: const EdgeInsets.symmetric(vertical: 4),
+      height: 55,
+      width: MediaQuery.of(context).size.width * 0.9,
+      decoration: BoxDecoration(
+        border: Border.all(
+            width: 2, color: isClose == true ? Colors.grey[300]! : clr),
+        borderRadius: BorderRadius.circular(20),
+        color: isClose == true ? Colors.transparent : clr,
+      ),
+      child: Center(
+          child: Text(
+        label,
+        style: isClose ? titleStyle : titleStyle.copyWith(color: Colors.white),
+      )),
+    ),
+  );
 }
 
 _addAppBar() {
