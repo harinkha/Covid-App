@@ -21,7 +21,7 @@ class AddTaskPage extends StatefulWidget {
 
 class _AddTaskPageState extends State<AddTaskPage> {
   final db = FirebaseFirestore.instance;
-  Task task = Task('', '', '', false, '', '', '');
+  Task task = Task('', '', '', false, '', '', '', '');
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _noteController = TextEditingController();
   String error = "";
@@ -30,6 +30,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   String _startTime = DateFormat("hh:mm a").format(DateTime.now()).toString();
   int _selectedRemind = 5;
   List<int> remindList = [
+    0,
     5,
     10,
     15,
@@ -40,8 +41,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
   List<String> repeatList = [
     "None",
     "Daily",
-    "Weekly",
-    "Monthly",
   ];
 
   @override
@@ -271,8 +270,15 @@ class _AddTaskPageState extends State<AddTaskPage> {
   }
 
   _addTaskToDb() {
-    task = Task(_titleController.text, DateFormat.yMd().format(_selectedDate),
-        _endTime, false, _noteController.text, _selectedRepeat, _startTime);
+    task = Task(
+        _titleController.text,
+        DateFormat.yMd().format(_selectedDate),
+        _endTime,
+        false,
+        _noteController.text,
+        _selectedRepeat,
+        _startTime,
+        _selectedRemind.toString());
   }
 
   _addAppBar(BuildContext context) {

@@ -6,9 +6,10 @@ class Task {
   String? date;
   bool? isCompleted;
   String? repeat;
+  String? remind;
 
   Task(this.title, this.date, this.endTime, this.isCompleted, this.note,
-      this.repeat, this.startTime);
+      this.repeat, this.startTime, this.remind);
 
   Task.fromJson(Map<String, dynamic> json) {
     title = json['title'];
@@ -18,6 +19,7 @@ class Task {
     date = json['date'];
     isCompleted = json['isCompleted'];
     repeat = json['repeat'];
+    remind = json['remind'];
   }
 
   Map<String, dynamic> toJson() => {
@@ -27,6 +29,7 @@ class Task {
         'note': note,
         'date': date,
         'isCompleted': isCompleted,
-        'repeat': repeat
+        'repeat': repeat,
+        'remind': remind
       };
 }

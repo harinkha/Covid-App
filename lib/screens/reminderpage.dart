@@ -63,12 +63,15 @@ class _ReminderState extends State<ReminderPage> {
                     itemBuilder: (context, index) {
                       final docsnap = streamSnapshot.data!.docs[index];
                       if (docsnap['repeat'] == 'Daily') {
+                        int remindEarly = int.parse(docsnap['remind']);
                         DateTime date = DateFormat.jm()
                             .parse(docsnap['startTime'].toString());
                         var myTime = DateFormat('HH:mm').format(date);
+                        var dif = date.subtract(Duration(minutes: remindEarly));
+                        var diff = DateFormat('HH:mm').format(dif);
                         notifyHelper.scheduledNotification(
-                          int.parse(myTime.toString().split(":")[0]),
-                          int.parse(myTime.toString().split(":")[1]),
+                          int.parse(diff.toString().split(":")[0]),
+                          int.parse(diff.toString().split(":")[1]),
                           docsnap['title'],
                           docsnap['note'],
                         );
