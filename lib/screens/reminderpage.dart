@@ -1,5 +1,6 @@
 import 'package:covidapp/models/taskModel.dart';
 import 'package:covidapp/services/firestore_service.dart';
+import 'package:covidapp/services/notification_service.dart';
 import 'package:covidapp/theme.dart';
 import 'package:covidapp/widgets/add_task_bar.dart';
 import 'package:covidapp/widgets/add_task_button.dart';
@@ -21,6 +22,14 @@ class ReminderPage extends StatefulWidget {
 }
 
 class _ReminderState extends State<ReminderPage> {
+  var notifyHelper = NotifyHelper();
+  @override
+  void initState() {
+    super.initState();
+    notifyHelper.initializeNotification();
+    notifyHelper.requestIOSPermissions();
+  }
+
   final _tasks = FirebaseFirestore.instance
       .collection('userData')
       .doc(FirebaseAuth.instance.currentUser?.uid)
@@ -54,6 +63,15 @@ class _ReminderState extends State<ReminderPage> {
                     itemBuilder: (context, index) {
                       final docsnap = streamSnapshot.data!.docs[index];
                       if (docsnap['repeat'] == 'Daily') {
+                        DateTime date = DateFormat.jm()
+                            .parse(docsnap['startTime'].toString());
+                        var myTime = DateFormat('HH:mm').format(date);
+                        notifyHelper.scheduledNotification(
+                          int.parse(myTime.toString().split(":")[0]),
+                          int.parse(myTime.toString().split(":")[1]),
+                          docsnap['title'],
+                          docsnap['note'],
+                        );
                         return AnimationConfiguration.staggeredList(
                             position: index,
                             child: SlideAnimation(

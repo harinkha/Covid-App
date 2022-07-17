@@ -17,14 +17,6 @@ class IsolationPage extends StatefulWidget {
 }
 
 class _IsolationPageState extends State<IsolationPage> {
-  var notifyHelper = NotifyHelper();
-  @override
-  void initState() {
-    super.initState();
-    notifyHelper.initializeNotification();
-    notifyHelper.requestIOSPermissions();
-  }
-
   DateTime dateTime = DateTime.now();
   final DateTime endDate = DateTime.now().add(Duration(days: 14));
   int later = 14;
@@ -95,17 +87,6 @@ class _IsolationPageState extends State<IsolationPage> {
               ],
             ),
           ),
-          GestureDetector(
-            onTap: () {
-              notifyHelper.displayNotification(
-                  title: "Successful", body: "Pushed");
-              notifyHelper.scheduledNotification();
-            },
-            child: Icon(
-              Icons.hdr_plus_rounded,
-              size: 28,
-            ),
-          )
         ],
       ),
       // This trailing comma makes auto-formatting nicer for build methods.
