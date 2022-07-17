@@ -1,4 +1,5 @@
 import 'package:covidapp/models/taskModel.dart';
+import 'package:covidapp/screens/notification_page.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:get/get.dart';
@@ -71,9 +72,7 @@ class NotifyHelper {
     } else {
       print("Notification Done");
     }
-    Get.to(() => Container(
-          color: Colors.white,
-        ));
+    Get.to(() => NotifiedPage(label: payload));
   }
 
   scheduledNotification(
@@ -90,7 +89,8 @@ class NotifyHelper {
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
-        matchDateTimeComponents: DateTimeComponents.time);
+        matchDateTimeComponents: DateTimeComponents.time,
+        payload: "${title}|" + "${note}|");
   }
 
   tz.TZDateTime _convertTime(int hour, int minutes) {
