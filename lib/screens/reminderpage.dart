@@ -216,7 +216,7 @@ class _ReminderState extends State<ReminderPage> {
           Spacer(),
           isCompleted == true
               ? Container()
-              : _bottomSheetButton(
+              : bottomSheetButton(
                   label: "Task Completed",
                   onTap: () {
                     _tasks.doc(id).update({'isCompleted': true});
@@ -225,7 +225,7 @@ class _ReminderState extends State<ReminderPage> {
                   clr: Color(0xFF4e5ae8),
                   context: context,
                 ),
-          _bottomSheetButton(
+          bottomSheetButton(
             label: "Delete Task",
             onTap: () {
               _tasks.doc(id).delete();
@@ -237,7 +237,7 @@ class _ReminderState extends State<ReminderPage> {
           SizedBox(
             height: 20,
           ),
-          _bottomSheetButton(
+          bottomSheetButton(
             label: "Close",
             isClose: true,
             onTap: () {
@@ -255,7 +255,7 @@ class _ReminderState extends State<ReminderPage> {
   }
 }
 
-_bottomSheetButton(
+bottomSheetButton(
     {required String label,
     required Function()? onTap,
     required Color clr,

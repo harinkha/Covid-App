@@ -117,7 +117,9 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: AddTaskButton(
                           label: "Back",
                           onTap: () {
-                            Get.to(LoginPage());
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) => LoginPage()));
                           }),
                     )
                   ],
