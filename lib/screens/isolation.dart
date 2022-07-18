@@ -20,6 +20,14 @@ class IsolationPage extends StatefulWidget {
 }
 
 class _IsolationPageState extends State<IsolationPage> {
+  var notifyHelper = NotifyHelper();
+  @override
+  void initState() {
+    super.initState();
+    notifyHelper.initializeNotification();
+    notifyHelper.requestIOSPermissions();
+  }
+
   final db = FirebaseFirestore.instance;
   final _quarantineDate = FirebaseFirestore.instance
       .collection('userData')
@@ -83,6 +91,24 @@ class _IsolationPageState extends State<IsolationPage> {
                                   color: Colors.blue,
                                   borderRadius: BorderRadius.circular(20)),
                               duration: Duration(seconds: dif),
+                              showZeroValue: true,
+                              onDone: () async {
+                                notifyHelper.displayNotification(
+                                    title: 'Congratulations',
+                                    body: 'Quarantine Over');
+                                var collection = FirebaseFirestore.instance
+                                    .collection('userData')
+                                    .doc(FirebaseAuth.instance.currentUser?.uid)
+                                    .collection('Quarantine');
+                                var snapshots = await collection.get();
+                                for (var doc in snapshots.docs) {
+                                  await doc.reference.delete();
+                                }
+
+                                setState(() {
+                                  isQuarantined = false;
+                                });
+                              },
                               separatorType: SeparatorType.title,
                               slideDirection: SlideDirection.up,
                               separatorStyle:
