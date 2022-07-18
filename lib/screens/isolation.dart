@@ -26,6 +26,7 @@ class _IsolationPageState extends State<IsolationPage> {
       .doc(FirebaseAuth.instance.currentUser?.uid)
       .collection('Quarantine');
   DateTime dateTime = DateTime.now();
+  bool isQuarantined = false;
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +75,7 @@ class _IsolationPageState extends State<IsolationPage> {
                                 end.difference(DateTime.now()).inSeconds;
 
                             print(dif);
+                            isQuarantined = dateFromServer['isQuarantined'];
 
                             return SlideCountdown(
                               padding: EdgeInsets.all(4),
@@ -126,49 +128,68 @@ class _IsolationPageState extends State<IsolationPage> {
                     ],
                   ),
                 ),
-                ButtonWidget(
-                  onClicked: (() async {
-                    DateTime _dateTime = DateTime.now();
-                    DateTime ending = _dateTime.add(Duration(days: 14));
-                    String date = DateFormat.yMd().format(_dateTime);
-                    String endDate = DateFormat.yMd().format(ending);
-                    String startTime =
-                        DateFormat("HH:mm:ss").format(_dateTime).toString();
-                    String endTime =
-                        DateFormat("HH:mm:ss").format(ending).toString();
-                    final uid = await FirebaseAuth.instance.currentUser?.uid;
-                    await db
-                        .collection('userData')
-                        .doc(uid)
-                        .collection('Quarantine')
-                        .add({
-                      'startTime': startTime,
-                      'startDate': date,
-                      'endDate': endDate,
-                      'endTime': endTime
-                    });
-                  }),
-                  label: 'Start Quarantine Now',
+                Opacity(
+                  opacity: isQuarantined ? 0.2 : 1,
+                  child: ButtonWidget(
+                    onClicked: (() async {
+                      if (isQuarantined == true) {
+                        return null;
+                      }
+                      setState(() {
+                        isQuarantined = true;
+                      });
+                      DateTime _dateTime = DateTime.now();
+                      DateTime ending = _dateTime.add(Duration(days: 14));
+                      String date = DateFormat.yMd().format(_dateTime);
+                      String endDate = DateFormat.yMd().format(ending);
+                      String startTime =
+                          DateFormat("HH:mm:ss").format(_dateTime).toString();
+                      String endTime =
+                          DateFormat("HH:mm:ss").format(ending).toString();
+                      final uid = await FirebaseAuth.instance.currentUser?.uid;
+                      await db
+                          .collection('userData')
+                          .doc(uid)
+                          .collection('Quarantine')
+                          .add({
+                        'startTime': startTime,
+                        'startDate': date,
+                        'endDate': endDate,
+                        'endTime': endTime,
+                        'isQuarantined': true
+                      });
+                      if (isQuarantined == true) {}
+                    }),
+                    label: 'Start Quarantine Now',
+                  ),
                 ),
-                ButtonWidget(
-                  onClicked: (() async {
-                    DateTime _dateTime = DateTime.now();
-                    String date = DateFormat.yMd().format(_dateTime);
+                Opacity(
+                  opacity: isQuarantined ? 1.0 : 0.2,
+                  child: ButtonWidget(
+                    color: Colors.blue,
+                    onClicked: (() async {
+                      setState(() {
+                        isQuarantined = false;
+                      });
+                      DateTime _dateTime = DateTime.now();
+                      String date = DateFormat.yMd().format(_dateTime);
 
-                    String startTime = DateFormat("hh:mm:ss a")
-                        .format(DateTime.now())
-                        .toString();
-                    final uid = await FirebaseAuth.instance.currentUser?.uid;
-                    var collection = FirebaseFirestore.instance
-                        .collection('userData')
-                        .doc(uid)
-                        .collection('Quarantine');
-                    var snapshots = await collection.get();
-                    for (var doc in snapshots.docs) {
-                      await doc.reference.delete();
-                    }
-                  }),
-                  label: 'Stop Quarantine',
+                      String startTime = DateFormat("hh:mm:ss a")
+                          .format(DateTime.now())
+                          .toString();
+                      final uid = await FirebaseAuth.instance.currentUser?.uid;
+                      var collection = FirebaseFirestore.instance
+                          .collection('userData')
+                          .doc(uid)
+                          .collection('Quarantine');
+                      var snapshots = await collection.get();
+                      for (var doc in snapshots.docs) {
+                        await doc.reference.delete();
+                      }
+                      isQuarantined = false;
+                    }),
+                    label: 'Stop Quarantine',
+                  ),
                 ),
               ],
             ),

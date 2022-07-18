@@ -3,13 +3,19 @@ import 'package:flutter/material.dart';
 class ButtonWidget extends StatelessWidget {
   final VoidCallback onClicked;
   final String label;
+  final Color color;
 
-  const ButtonWidget({Key? key, required this.onClicked, required this.label})
+  const ButtonWidget(
+      {Key? key,
+      required this.onClicked,
+      required this.label,
+      this.color = Colors.blue})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) => ElevatedButton(
-        style: ElevatedButton.styleFrom(minimumSize: Size(100, 42)),
+        style: ElevatedButton.styleFrom(
+            minimumSize: Size(100, 42), onSurface: color),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
