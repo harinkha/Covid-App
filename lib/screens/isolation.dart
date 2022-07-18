@@ -8,6 +8,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:covidapp/services/notification_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:slide_countdown/slide_countdown.dart';
 
 class IsolationPage extends StatefulWidget {
   const IsolationPage({Key? key}) : super(key: key);
@@ -17,9 +20,13 @@ class IsolationPage extends StatefulWidget {
 }
 
 class _IsolationPageState extends State<IsolationPage> {
+  final db = FirebaseFirestore.instance;
+  final _quarantineDate = FirebaseFirestore.instance
+      .collection('userData')
+      .doc(FirebaseAuth.instance.currentUser?.uid)
+      .collection('Quarantine');
   DateTime dateTime = DateTime.now();
-  final DateTime endDate = DateTime.now().add(Duration(days: 14));
-  int later = 14;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +49,54 @@ class _IsolationPageState extends State<IsolationPage> {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(top: 60, bottom: 10),
-                  child: Daysleft(later),
+                  child: Container(
+                    height: 100,
+                    child: StreamBuilder(
+                      stream: _quarantineDate.snapshots(),
+                      builder: ((context,
+                          AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                        if (streamSnapshot.hasData) {
+                          try {
+                            var dateFromServer = streamSnapshot.data!.docs[0];
+                            var endDate = DateFormat('MM/dd/yy')
+                                .parse(dateFromServer['endDate']);
+                            var endTime = DateFormat('HH:mm:ss')
+                                .parse(dateFromServer['endTime']);
+                            var end = DateTime(
+                                endDate.year,
+                                endDate.month,
+                                endDate.day,
+                                endTime.hour,
+                                endTime.minute,
+                                endTime.second);
+                            print(end);
+                            final dif =
+                                end.difference(DateTime.now()).inSeconds;
+
+                            print(dif);
+
+                            return SlideCountdown(
+                              padding: EdgeInsets.all(4),
+                              decoration: BoxDecoration(
+                                  color: Colors.blue,
+                                  borderRadius: BorderRadius.circular(20)),
+                              duration: Duration(seconds: dif),
+                              separatorType: SeparatorType.title,
+                              slideDirection: SlideDirection.up,
+                              separatorStyle:
+                                  TextStyle(color: Colors.white, fontSize: 15),
+                            );
+                          } catch (e) {
+                            return Container(child: Text("Quarantine over"));
+                          }
+                        } else {
+                          return Container(
+                            child: Text("Chill"),
+                          );
+                        }
+                      }),
+                    ),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -73,17 +127,49 @@ class _IsolationPageState extends State<IsolationPage> {
                   ),
                 ),
                 ButtonWidget(
-                  onClicked: (() {
-                    Utils.showSheet(context, child: buildDateTimePicker(),
-                        onClicked: () {
-                      Navigator.pop(context);
-                      setState(() {
-                        later = endDate.difference(dateTime).inDays;
-                      });
+                  onClicked: (() async {
+                    DateTime _dateTime = DateTime.now();
+                    DateTime ending = _dateTime.add(Duration(days: 14));
+                    String date = DateFormat.yMd().format(_dateTime);
+                    String endDate = DateFormat.yMd().format(ending);
+                    String startTime =
+                        DateFormat("HH:mm:ss").format(_dateTime).toString();
+                    String endTime =
+                        DateFormat("HH:mm:ss").format(ending).toString();
+                    final uid = await FirebaseAuth.instance.currentUser?.uid;
+                    await db
+                        .collection('userData')
+                        .doc(uid)
+                        .collection('Quarantine')
+                        .add({
+                      'startTime': startTime,
+                      'startDate': date,
+                      'endDate': endDate,
+                      'endTime': endTime
                     });
                   }),
-                  label: 'Date & Time',
-                )
+                  label: 'Start Quarantine Now',
+                ),
+                ButtonWidget(
+                  onClicked: (() async {
+                    DateTime _dateTime = DateTime.now();
+                    String date = DateFormat.yMd().format(_dateTime);
+
+                    String startTime = DateFormat("hh:mm:ss a")
+                        .format(DateTime.now())
+                        .toString();
+                    final uid = await FirebaseAuth.instance.currentUser?.uid;
+                    var collection = FirebaseFirestore.instance
+                        .collection('userData')
+                        .doc(uid)
+                        .collection('Quarantine');
+                    var snapshots = await collection.get();
+                    for (var doc in snapshots.docs) {
+                      await doc.reference.delete();
+                    }
+                  }),
+                  label: 'Stop Quarantine',
+                ),
               ],
             ),
           ),
