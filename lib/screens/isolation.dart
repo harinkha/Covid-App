@@ -1,3 +1,4 @@
+import 'package:covidapp/screens/reminderpage.dart';
 import 'package:covidapp/widgets/DaysLeft.dart';
 import 'package:covidapp/widgets/button_widget.dart';
 import 'package:covidapp/widgets/duration.dart';
@@ -54,7 +55,7 @@ class _IsolationPageState extends State<IsolationPage> {
         children: [
           Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(top: 60, bottom: 10),
@@ -115,7 +116,7 @@ class _IsolationPageState extends State<IsolationPage> {
                                   TextStyle(color: Colors.white, fontSize: 15),
                             );
                           } catch (e) {
-                            return Container(child: Text("Quarantine over"));
+                            return Container();
                           }
                         } else {
                           return Container(
@@ -154,10 +155,15 @@ class _IsolationPageState extends State<IsolationPage> {
                     ],
                   ),
                 ),
+                SizedBox(
+                  height: 150,
+                ),
                 Opacity(
                   opacity: isQuarantined ? 0.2 : 1,
-                  child: ButtonWidget(
-                    onClicked: (() async {
+                  child: bottomSheetButton(
+                    context: context,
+                    clr: Colors.red,
+                    onTap: (() async {
                       if (isQuarantined == true) {
                         return null;
                       }
@@ -189,11 +195,15 @@ class _IsolationPageState extends State<IsolationPage> {
                     label: 'Start Quarantine Now',
                   ),
                 ),
+                SizedBox(
+                  height: 20,
+                ),
                 Opacity(
                   opacity: isQuarantined ? 1.0 : 0.2,
-                  child: ButtonWidget(
-                    color: Colors.blue,
-                    onClicked: (() async {
+                  child: bottomSheetButton(
+                    context: context,
+                    clr: Colors.blue,
+                    onTap: (() async {
                       setState(() {
                         isQuarantined = false;
                       });
