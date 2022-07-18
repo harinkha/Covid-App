@@ -1,33 +1,25 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:covidapp/main.dart';
-import 'package:covidapp/screens/signup.dart';
-import 'package:covidapp/screens/splashscreen.dart';
-import 'package:covidapp/screens/tabs.dart';
-import 'package:covidapp/theme.dart';
-import 'package:covidapp/widgets/add_task_button.dart';
+import 'package:covidapp/screens/loginpage.dart';
+import 'package:flutter/src/foundation/key.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
-import 'package:covidapp/widgets/input_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
+import 'package:covidapp/theme.dart';
+import 'package:covidapp/widgets/input_field.dart';
+import 'package:covidapp/widgets/add_task_button.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignUpPageState extends State<SignUpPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  @override
-  void initState() {
-    super.initState();
-    WidgetsFlutterBinding.ensureInitialized();
-    Firebase.initializeApp();
-  }
-
+  final _confirmPasswordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     String test = '';
@@ -57,6 +49,12 @@ class _LoginPageState extends State<LoginPage> {
                 hide: true,
                 controller: _passwordController,
               ),
+              MyInputField(
+                title: "Confirm Password",
+                hint: "Re-enter your password",
+                hide: true,
+                controller: _confirmPasswordController,
+              ),
               Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: Row(
@@ -66,61 +64,60 @@ class _LoginPageState extends State<LoginPage> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: AddTaskButton(
-                          label: "Log In",
+                          label: "Sign Up",
                           onTap: () async {
                             try {
-                              await FirebaseAuth.instance
-                                  .signInWithEmailAndPassword(
-                                email: _emailController.text,
-                                password: _passwordController.text,
-                              );
-                              Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                      builder: (context) => TabViews()));
+                              if (_passwordController.text !=
+                                  _confirmPasswordController.text) {
+                                Get.snackbar("Error", "Passwords don't match",
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    backgroundColor: Colors.red,
+                                    icon: Icon(Icons.warning_amber_outlined));
+                              } else {
+                                await FirebaseAuth.instance
+                                    .createUserWithEmailAndPassword(
+                                  email: _emailController.text,
+                                  password: _passwordController.text,
+                                );
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (context) => LoginPage()));
+                              }
                             } on FirebaseAuthException catch (e) {
                               print(e.code);
                               switch (e.code) {
-                                case "invalid-email":
-                                case "wrong-password":
-                                case "user-not-found":
+                                case "email-already-in-use":
                                   {
                                     Get.snackbar(
-                                        "Error", "Wrong Email or Password",
+                                        "Error", "Email already in use",
                                         snackPosition: SnackPosition.BOTTOM,
                                         backgroundColor: Colors.red,
                                         icon:
                                             Icon(Icons.warning_amber_outlined));
+
                                     break;
                                   }
-                                case "user-disabled":
+                                case "weak-password":
                                   {
-                                    Get.snackbar("Error", "User is disabled",
+                                    Get.snackbar("Weak Password",
+                                        "Password must be 8 characters",
                                         snackPosition: SnackPosition.BOTTOM,
                                         backgroundColor: Colors.red,
                                         icon:
                                             Icon(Icons.warning_amber_outlined));
+
                                     break;
                                   }
                               }
                             }
-
-                            setState(() {
-                              if (FirebaseAuth.instance.currentUser != null) {
-                                test = 'Logged in';
-                                print(test);
-                                print(FirebaseAuth.instance.currentUser?.email);
-                              }
-                            });
                           }),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: AddTaskButton(
-                          label: "Sign Up",
+                          label: "Back",
                           onTap: () {
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (context) => SignUpPage()));
+                            Get.to(LoginPage());
                           }),
                     )
                   ],
