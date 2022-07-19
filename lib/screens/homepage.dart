@@ -1,4 +1,5 @@
 import 'package:covidapp/screens/dailycasesPage.dart';
+import 'package:covidapp/screens/infopage.dart';
 import 'package:covidapp/screens/isolation.dart';
 import 'package:covidapp/widgets/DaysLeft.dart';
 import 'package:covidapp/widgets/ScrollableRowIcons.dart';
@@ -8,6 +9,7 @@ import 'package:covidapp/widgets/durationText.dart';
 import 'package:covidapp/widgets/BannerWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:covidapp/api/api_service_cases.dart';
 import 'package:covidapp/models/CaseModels.dart';
@@ -96,8 +98,9 @@ class _HomePageState extends State<HomePage> {
                                     'assets/images/flask.png', 'Labs', action),
                                 CustomButtonIcon(
                                     'assets/images/information.png',
-                                    'Information',
-                                    action),
+                                    'Information', () {
+                                  Get.to(InfoScreen());
+                                }),
                                 CustomButtonIcon('assets/images/medicine.png',
                                     'Reminder', action),
                               ]),

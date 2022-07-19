@@ -62,6 +62,7 @@ class _ReminderState extends State<ReminderPage> {
                     itemCount: streamSnapshot.data!.docs.length,
                     itemBuilder: (context, index) {
                       final docsnap = streamSnapshot.data!.docs[index];
+
                       if (docsnap['repeat'] == 'Daily') {
                         int remindEarly = int.parse(docsnap['remind']);
                         DateTime date = DateFormat.jm()
