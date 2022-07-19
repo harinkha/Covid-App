@@ -1,6 +1,7 @@
 import 'package:covidapp/screens/dailycasesPage.dart';
 import 'package:covidapp/screens/infopage.dart';
 import 'package:covidapp/screens/isolation.dart';
+import 'package:covidapp/screens/reminderpage.dart';
 import 'package:covidapp/widgets/DaysLeft.dart';
 import 'package:covidapp/widgets/ScrollableRowIcons.dart';
 import 'package:covidapp/widgets/dailycases.dart';
@@ -84,26 +85,20 @@ class _HomePageState extends State<HomePage> {
                             padding: const EdgeInsets.all(20.0),
                             child: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
-                              child: Row(children: [
-                                CustomButtonIcon(
-                                    'assets/images/news-report.png', 'News',
-                                    (() {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              DailyCasesPage()));
-                                })),
-                                CustomButtonIcon(
-                                    'assets/images/flask.png', 'Labs', action),
-                                CustomButtonIcon(
-                                    'assets/images/information.png',
-                                    'Information', () {
-                                  Get.to(InfoScreen());
-                                }),
-                                CustomButtonIcon('assets/images/medicine.png',
-                                    'Reminder', action),
-                              ]),
+                              child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    CustomButtonIcon(
+                                        'assets/images/information.png',
+                                        'Information', () {
+                                      Get.to(InfoScreen());
+                                    }),
+                                    CustomButtonIcon(
+                                        'assets/images/medicine.png',
+                                        'Reminder',
+                                        () => Get.to(ReminderPage())),
+                                  ]),
                             ),
                           ),
                           Padding(
