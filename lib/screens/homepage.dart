@@ -79,7 +79,8 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(top: 30, bottom: 10),
-                            child: DailyCases(_caseModel![0].newCase),
+                            child: DailyCases(
+                                formatter.format(_caseModel![0].newCase)),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(20.0),

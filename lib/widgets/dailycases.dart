@@ -4,7 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DailyCases extends StatelessWidget {
-  int cases;
+  String cases;
 
   DailyCases(this.cases);
 
@@ -34,7 +34,7 @@ class DailyCases extends StatelessWidget {
               ),
             ),
             Text(
-              'Active Cases',
+              'New Cases',
               style: GoogleFonts.openSans(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,

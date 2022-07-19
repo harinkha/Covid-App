@@ -14,14 +14,12 @@ class _InfoScreenState extends State<InfoScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     controller.addListener(onScroll);
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     controller.dispose();
     super.dispose();
   }
@@ -230,3 +228,5 @@ class SymptomCard extends StatelessWidget {
     );
   }
 }
+
+//credits: https://github.com/abuanwar072/Covid-19-Flutter-UI
