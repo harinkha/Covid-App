@@ -80,8 +80,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                     .updatePassword(_passwordController.text);
                                 notifyHelper.displayNotification(
                                     title: "Password Changed", body: "Success");
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => ProfilePage()));
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (context) => ProfilePage()));
                               }
                             } on FirebaseAuthException catch (e) {
                               print(e.code);
