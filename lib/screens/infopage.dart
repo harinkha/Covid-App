@@ -92,9 +92,9 @@ class _InfoScreenState extends State<InfoScreen> {
                   ),
                   PreventCard(
                     text:
-                        "Washing hands will remove potential germs on your hands. This reduces the chance to catch the disease",
+                        "Maintaining social distance helps in reducing the potential of contracting the disease. This measure is implemented worldwide",
                     image: "assets/images/social-distance.png",
-                    title: "Wash your hands",
+                    title: "Maintain Social Distance",
                   ),
                   SizedBox(height: 50),
                 ],

@@ -119,9 +119,7 @@ class _IsolationPageState extends State<IsolationPage> {
                             return Container();
                           }
                         } else {
-                          return Container(
-                            child: Text("Chill"),
-                          );
+                          return Container();
                         }
                       }),
                     ),
@@ -145,12 +143,6 @@ class _IsolationPageState extends State<IsolationPage> {
                             ),
                           ],
                         ),
-                      ),
-                      Column(
-                        children: [
-                          DurationText('At'),
-                          DurationTime(DateFormat('hh:mm a').format(dateTime)),
-                        ],
                       ),
                     ],
                   ),
